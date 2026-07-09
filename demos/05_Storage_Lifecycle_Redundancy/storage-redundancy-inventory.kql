@@ -1,0 +1,21 @@
+// =============================================================================
+// Demo 5: Storage redundancy & tier inventory (Azure Resource Graph).
+// Run in Resource Graph Explorer or: az graph query -q "<query>"
+// Use this to pair the lifecycle/tiering discussion with a redundancy review.
+// =============================================================================
+
+// Storage accounts with their redundancy (SKU), access tier, and TLS/version.
+// GRS/RA-GRS costs more than ZRS/LRS — confirm the resiliency requirement
+// actually justifies geo-redundancy for each account.
+Resources
+| where type =~ 'microsoft.storage/storageaccounts'
+| project name,
+          resourceGroup,
+          subscriptionId,
+          location,
+          redundancy   = tostring(sku.name),      // e.g. Standard_LRS, Standard_GRS, Standard_ZRS
+          kind         = tostring(kind),
+          accessTier   = tostring(properties.accessTier),
+          httpsOnly    = tobool(properties.supportsHttpsTrafficOnly),
+          minTls       = tostring(properties.minimumTlsVersion)
+| order by redundancy asc, name asc

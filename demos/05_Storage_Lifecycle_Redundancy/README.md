@@ -24,6 +24,12 @@
 - **Talk track:** "The cheapest tier is not automatically the right tier. We optimize storage by matching access patterns, recovery expectations, and retention obligations."
 - **Fallback:** If live policy creation is not possible, use a policy JSON example and explain each rule.
 
+## Assets
+
+- [`lifecycle-policy.json`](lifecycle-policy.json) — sample blob lifecycle policy (tier to cool/cold/archive by age, delete, snapshot/version rules, last-access tiering for logs).
+- [`apply-lifecycle-policy.sh`](apply-lifecycle-policy.sh) — applies the policy to a storage account via Azure CLI.
+- [`storage-redundancy-inventory.kql`](storage-redundancy-inventory.kql) — ARG query listing storage accounts with redundancy (LRS/ZRS/GRS), access tier, and TLS settings.
+
 ## Notes / Prep
 
 _Add demo-specific setup notes, links, screenshots, or lifecycle policy JSON here._

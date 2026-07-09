@@ -24,6 +24,10 @@
 - **Talk track:** "Spot is not a discount switch. It is a design choice for workloads that can tolerate interruption."
 - **Fallback:** If the pricing tool is unavailable, use a prepared screenshot and walk through the decision criteria.
 
+## Assets
+
+- [`Compare-SpotPricing.ps1`](Compare-SpotPricing.ps1) — queries the public Azure Retail Prices API to show live standard vs Spot pricing and the discount % for a VM family in a region (no auth required).
+
 ## Notes / Prep
 
 _Add demo-specific setup notes, links, screenshots, or pricing scripts here._

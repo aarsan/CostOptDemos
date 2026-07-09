@@ -1,0 +1,61 @@
+// =============================================================================
+// Demo 6: Log Analytics Workspace Cost Controls.
+// Run these IN the target Log Analytics workspace (Logs blade).
+// The Usage table is the billing source of truth for ingestion volume.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// 1. Billable ingestion by table over the last 30 days (the "where is my
+//    money going" view). Sort shows the highest-cost tables first.
+// -----------------------------------------------------------------------------
+Usage
+| where TimeGenerated > ago(30d)
+| where IsBillable == true
+| summarize BillableGB = round(sum(Quantity) / 1000, 2) by DataType
+| order by BillableGB desc
+
+// -----------------------------------------------------------------------------
+// 2. Daily ingestion trend (spot spikes / runaway sources).
+// -----------------------------------------------------------------------------
+Usage
+| where TimeGenerated > ago(30d)
+| where IsBillable == true
+| summarize BillableGB = round(sum(Quantity) / 1000, 2) by bin(TimeGenerated, 1d)
+| render timechart
+
+// -----------------------------------------------------------------------------
+// 3. Day-over-day spike detection on the top table (guardrail candidate).
+//    Flags any day whose ingestion is >50% above the trailing 7-day average.
+// -----------------------------------------------------------------------------
+Usage
+| where TimeGenerated > ago(30d)
+| where IsBillable == true
+| summarize GB = sum(Quantity) / 1000 by DataType, bin(TimeGenerated, 1d)
+| order by DataType asc, TimeGenerated asc
+| extend avg7 = row_window_session(TimeGenerated, 7d, 7d, DataType != prev(DataType))
+| serialize
+| extend trailingAvg = prev(GB, 1)
+| where isnotempty(trailingAvg) and GB > trailingAvg * 1.5
+| project TimeGenerated, DataType, GB = round(GB, 2), trailingAvg = round(trailingAvg, 2)
+
+// -----------------------------------------------------------------------------
+// 4. Top-ingesting computers within the busiest table (find the noisy source).
+//    Set the table name first.
+// -----------------------------------------------------------------------------
+// let table = 'Perf';
+// union withsource=Tbl *
+// | where TimeGenerated > ago(7d) and Tbl == table
+// | summarize records = count() by Computer
+// | top 20 by records desc
+
+// -----------------------------------------------------------------------------
+// 5. Estimate monthly cost from 30-day billable volume.
+//    Set $perGB to the workspace's effective per-GB rate (or commitment-tier
+//    equivalent) for the region/currency.
+// -----------------------------------------------------------------------------
+let perGB = 2.76;   // <-- replace with Bosch's effective analytics rate (USD/GB)
+Usage
+| where TimeGenerated > ago(30d)
+| where IsBillable == true
+| summarize BillableGB = sum(Quantity) / 1000
+| extend EstMonthlyCost = round(BillableGB * perGB, 2)

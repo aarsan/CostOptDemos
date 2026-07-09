@@ -1,0 +1,59 @@
+// =============================================================================
+// Demo 1: Azure Cost Optimization Workbook — supporting Azure Resource Graph
+// queries. Run in Azure Portal > Resource Graph Explorer, or via:
+//   az graph query -q "<query>"   (requires: az extension add --name resource-graph)
+// These surface the same "idle / waste" signals the Advisor workbook highlights,
+// so you can show the underlying data behind a recommendation.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// 1. Unattached managed disks (paying for storage with no VM attached)
+// -----------------------------------------------------------------------------
+Resources
+| where type =~ 'microsoft.compute/disks'
+| where properties.diskState == 'Unattached'
+| project name, resourceGroup, subscriptionId, location,
+          sku = tostring(sku.name),
+          sizeGB = toint(properties.diskSizeGB)
+| order by sizeGB desc
+
+// -----------------------------------------------------------------------------
+// 2. Public IPs not associated with anything (idle spend)
+// -----------------------------------------------------------------------------
+Resources
+| where type =~ 'microsoft.network/publicipaddresses'
+| where isnull(properties.ipConfiguration) and isnull(properties.natGateway)
+| project name, resourceGroup, subscriptionId, location,
+          sku = tostring(sku.name),
+          allocation = tostring(properties.publicIPAllocationMethod)
+
+// -----------------------------------------------------------------------------
+// 3. Deallocated (stopped but not deallocated = still billed) VMs
+//    Stopped-allocated VMs still incur compute charges; deallocated do not.
+// -----------------------------------------------------------------------------
+Resources
+| where type =~ 'microsoft.compute/virtualmachines'
+| extend powerState = tostring(properties.extended.instanceView.powerState.code)
+| project name, resourceGroup, subscriptionId, location, powerState,
+          vmSize = tostring(properties.hardwareProfile.vmSize)
+| order by powerState asc
+
+// -----------------------------------------------------------------------------
+// 4. Empty resource groups (housekeeping / stray ownership)
+// -----------------------------------------------------------------------------
+ResourceContainers
+| where type =~ 'microsoft.resources/subscriptions/resourcegroups'
+| join kind=leftouter (
+    Resources | summarize resourceCount = count() by resourceGroup, subscriptionId
+) on resourceGroup, subscriptionId
+| where isnull(resourceCount)
+| project resourceGroup, subscriptionId, location
+
+// -----------------------------------------------------------------------------
+// 5. Resources missing a cost-ownership tag (accountability gap)
+//    Adjust the tag key ('CostCenter') to match Bosch tagging standards.
+// -----------------------------------------------------------------------------
+Resources
+| where isnull(tags['CostCenter']) or tags['CostCenter'] == ''
+| summarize untaggedResources = count() by type, subscriptionId
+| order by untaggedResources desc

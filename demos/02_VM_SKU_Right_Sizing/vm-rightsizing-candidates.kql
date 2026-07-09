@@ -1,0 +1,62 @@
+// =============================================================================
+// Demo 2: VM SKU Right-Sizing — candidate detection from VM utilization.
+// Run against a Log Analytics workspace that has VM Insights enabled
+// (InsightsMetrics) and/or the Perf table from the Log Analytics agent.
+// Adjust the lookback window and thresholds to match Bosch's risk tolerance.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// A. VM Insights (InsightsMetrics) — CPU avg + p95 over 30 days.
+//    Preferred source: works for both Windows and Linux with the AMA agent.
+// -----------------------------------------------------------------------------
+let lookback = 30d;
+let cpuHighWatermark = 40.0;   // p95 CPU below this = right-size candidate
+InsightsMetrics
+| where TimeGenerated > ago(lookback)
+| where Namespace == 'Processor' and Name == 'UtilizationPercentage'
+| summarize
+    avgCpu = avg(Val),
+    p95Cpu = percentile(Val, 95),
+    maxCpu = max(Val),
+    samples = count()
+    by Computer, _ResourceId
+| where p95Cpu < cpuHighWatermark
+| project Computer, _ResourceId,
+          avgCpu = round(avgCpu, 1),
+          p95Cpu = round(p95Cpu, 1),
+          maxCpu = round(maxCpu, 1),
+          samples
+| order by p95Cpu asc
+
+// -----------------------------------------------------------------------------
+// B. Legacy Perf table equivalent (Log Analytics agent / MMA).
+//    Use if InsightsMetrics is not populated.
+// -----------------------------------------------------------------------------
+// let lookback = 30d;
+// Perf
+// | where TimeGenerated > ago(lookback)
+// | where ObjectName == 'Processor' and CounterName == '% Processor Time'
+//         and InstanceName == '_Total'
+// | summarize avgCpu = avg(CounterValue),
+//             p95Cpu = percentile(CounterValue, 95),
+//             maxCpu = max(CounterValue)
+//         by Computer
+// | where p95Cpu < 40
+// | order by p95Cpu asc
+
+// -----------------------------------------------------------------------------
+// C. Multi-signal view for a SINGLE VM (validate before acting).
+//    Set the computer name, then confirm CPU / memory / disk / network are all
+//    genuinely low before recommending a resize.
+// -----------------------------------------------------------------------------
+// let target = 'MYVM01';
+// let lookback = 30d;
+// InsightsMetrics
+// | where TimeGenerated > ago(lookback) and Computer == target
+// | where (Namespace == 'Processor'      and Name == 'UtilizationPercentage')
+//      or (Namespace == 'Memory'         and Name == 'AvailableMB')
+//      or (Namespace == 'LogicalDisk'    and Name == 'BytesPerSecond')
+//      or (Namespace == 'Network'        and Name in ('WriteBytesPerSecond','ReadBytesPerSecond'))
+// | summarize avg = avg(Val), p95 = percentile(Val, 95), max = max(Val)
+//         by Namespace, Name
+// | order by Namespace asc

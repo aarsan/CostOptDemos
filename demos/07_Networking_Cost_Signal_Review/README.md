@@ -24,6 +24,11 @@
 - **Talk track:** "Networking cost is rarely just a pricing issue. It usually reflects architecture decisions, resiliency goals, and data movement patterns."
 - **Fallback:** If cost data is unavailable, lead with the checklist and capture Bosch-specific follow-up questions.
 
+## Assets
+
+- [`network-cost-driver-checklist.md`](network-cost-driver-checklist.md) — discussion-led checklist mapping each network cost driver to an architecture review question.
+- [`network-cost-signals.kql`](network-cost-signals.kql) — ARG queries for idle public IPs, NAT gateways, private endpoints, VPN/ER gateways, and unattached NICs.
+
 ## Notes / Prep
 
 _Add demo-specific setup notes, links, screenshots, or the network cost driver checklist here._

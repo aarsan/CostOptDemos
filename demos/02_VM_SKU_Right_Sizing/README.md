@@ -25,6 +25,11 @@
 - **Talk track:** "Underutilization is a signal, not a verdict. The goal is to identify candidates and then decide whether resize, scheduling, Spot, burstable, modernization, or no action is the right move."
 - **Fallback:** If guest metrics are not available, use Azure Advisor and Azure Monitor platform metrics, then discuss what additional VM Insights or Log Analytics data would improve confidence.
 
+## Assets
+
+- [`vm-rightsizing-candidates.kql`](vm-rightsizing-candidates.kql) — VM Insights / Perf KQL to find right-size candidates (avg + p95 CPU) and a multi-signal validation query for a single VM.
+- [`Get-VMRightSizeRecommendations.ps1`](Get-VMRightSizeRecommendations.ps1) — Advisor VM right-size/shutdown recommendations with current SKU, target SKU, and projected annual savings.
+
 ## Notes / Prep
 
 _Add demo-specific setup notes, links, screenshots, or KQL queries here._

@@ -24,6 +24,11 @@
 - **Talk track:** "This workbook gives us a starting point. The value is not just seeing savings opportunities; it is turning those signals into owned, governed actions."
 - **Fallback:** If live access is unavailable, use screenshots and focus on the interpretation workflow.
 
+## Assets
+
+- [`idle-resource-signals.kql`](idle-resource-signals.kql) — Azure Resource Graph queries for the idle/waste signals behind the workbook (unattached disks, idle public IPs, stopped-but-allocated VMs, empty RGs, untagged resources).
+- [`Get-CostOptimizationSignals.ps1`](Get-CostOptimizationSignals.ps1) — lists Advisor cost recommendations and prints the portal deep-link to the Cost Optimization workbook.
+
 ## Notes / Prep
 
 _Add demo-specific setup notes, links, screenshots, or scripts here._

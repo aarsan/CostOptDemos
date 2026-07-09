@@ -24,6 +24,10 @@
 - **Talk track:** "The goal is not less logging; the goal is intentional logging. We want the right data, retained for the right duration, at the right cost model."
 - **Fallback:** If no live workspace is available, show a sample ingestion breakdown and walk through the decision process.
 
+## Assets
+
+- [`log-analytics-cost.kql`](log-analytics-cost.kql) — billable ingestion by table, daily trend, spike detection, top-ingesting sources, and a monthly cost estimate from the `Usage` table.
+
 ## Notes / Prep
 
 _Add demo-specific setup notes, links, screenshots, or KQL queries here._

@@ -1,0 +1,49 @@
+{
+  "//": "Demo 5: Sample blob lifecycle management policy. Transitions blobs to cooler tiers by age and deletes old data. Apply with apply-lifecycle-policy.sh. Tune days/prefixes/tags to Bosch retention obligations before using.",
+  "rules": [
+    {
+      "enabled": true,
+      "name": "tier-then-expire-baseData",
+      "type": "Lifecycle",
+      "definition": {
+        "filters": {
+          "blobTypes": [ "blockBlob" ],
+          "prefixMatch": [ "data/" ]
+        },
+        "actions": {
+          "baseBlob": {
+            "tierToCool":    { "daysAfterModificationGreaterThan": 30 },
+            "tierToCold":    { "daysAfterModificationGreaterThan": 90 },
+            "tierToArchive": { "daysAfterModificationGreaterThan": 180 },
+            "delete":        { "daysAfterModificationGreaterThan": 2555 }
+          },
+          "snapshot": {
+            "delete": { "daysAfterCreationGreaterThan": 90 }
+          },
+          "version": {
+            "tierToCool": { "daysAfterCreationGreaterThan": 30 },
+            "delete":     { "daysAfterCreationGreaterThan": 365 }
+          }
+        }
+      }
+    },
+    {
+      "enabled": true,
+      "name": "tier-by-last-access-logs",
+      "type": "Lifecycle",
+      "definition": {
+        "filters": {
+          "blobTypes": [ "blockBlob" ],
+          "prefixMatch": [ "logs/" ]
+        },
+        "actions": {
+          "baseBlob": {
+            "enableAutoTierToHotFromCool": true,
+            "tierToCool": { "daysAfterLastAccessTimeGreaterThan": 15 },
+            "delete":     { "daysAfterLastAccessTimeGreaterThan": 365 }
+          }
+        }
+      }
+    }
+  ]
+}
