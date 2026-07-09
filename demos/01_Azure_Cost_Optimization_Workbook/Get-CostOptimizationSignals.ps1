@@ -26,7 +26,7 @@ $ctx = Get-AzContext
 Write-Host "Subscription: $($ctx.Subscription.Name) ($($ctx.Subscription.Id))" -ForegroundColor Cyan
 
 Write-Host "`nAzure Advisor cost recommendations:" -ForegroundColor Yellow
-$recs = Get-AzAdvisorRecommendation -Category Cost
+$recs = Get-AzAdvisorRecommendation | Where-Object { $_.Category -eq 'Cost' }
 
 if (-not $recs) {
     Write-Host "  (none returned — use the Microsoft demo environment / screenshots)" -ForegroundColor DarkYellow

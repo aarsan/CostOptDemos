@@ -25,7 +25,8 @@ if ($SubscriptionId) {
 $ctx = Get-AzContext
 Write-Host "Subscription: $($ctx.Subscription.Name) ($($ctx.Subscription.Id))" -ForegroundColor Cyan
 
-$recs = Get-AzAdvisorRecommendation -Category Cost |
+$recs = Get-AzAdvisorRecommendation |
+    Where-Object { $_.Category -eq 'Cost' } |
     Where-Object {
         $_.ShortDescriptionProblem -match 'right-size|right size|shutdown|underutilized|virtual machine'
     }

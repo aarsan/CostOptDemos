@@ -14,7 +14,7 @@ Resources
           subscriptionId,
           location,
           redundancy   = tostring(sku.name),      // e.g. Standard_LRS, Standard_GRS, Standard_ZRS
-          kind         = tostring(kind),
+          storageKind  = tostring(kind),
           accessTier   = tostring(properties.accessTier),
           httpsOnly    = tobool(properties.supportsHttpsTrafficOnly),
           minTls       = tostring(properties.minimumTlsVersion)

@@ -24,15 +24,15 @@ Usage
 | render timechart
 
 // -----------------------------------------------------------------------------
-// 3. Day-over-day spike detection on the top table (guardrail candidate).
-//    Flags any day whose ingestion is >50% above the trailing 7-day average.
+// 3. Day-over-day spike detection (guardrail candidate).
+//    Flags any day whose ingestion is >50% above the previous day, per table.
+//    (Rows are ordered by table then time; review per-DataType.)
 // -----------------------------------------------------------------------------
 Usage
 | where TimeGenerated > ago(30d)
 | where IsBillable == true
 | summarize GB = sum(Quantity) / 1000 by DataType, bin(TimeGenerated, 1d)
 | order by DataType asc, TimeGenerated asc
-| extend avg7 = row_window_session(TimeGenerated, 7d, 7d, DataType != prev(DataType))
 | serialize
 | extend trailingAvg = prev(GB, 1)
 | where isnotempty(trailingAvg) and GB > trailingAvg * 1.5
