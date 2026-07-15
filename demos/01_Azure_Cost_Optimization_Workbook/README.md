@@ -1,34 +1,32 @@
 # Demo 1: Azure Cost Optimization Workbook
 
-**Segment:** Architecting for cloud financial accountability
-**Speaker/Owner:** Jackie He
-**Timebox:** 8 minutes
+_Topic: Cost visibility & accountability_
 
-## Overview
+The Azure **Cost Optimization workbook** in Azure Advisor is a single starting point that brings together idle resources, right-sizing, reservations, savings plans, and Azure Hybrid Benefit signals — before you dive into any one workload.
 
-**Description:** Walk through the Azure Advisor Cost Optimization workbook as a centralized view for cost recommendations, idle resources, reservations, savings plans, Azure Hybrid Benefit, and usage optimization signals.
+## What you'll learn
 
-**Customer takeaway:** Bosch sees how governance, accountability, and workload-level optimization signals can be reviewed from a single starting point before deeper analysis.
+- Where to find one consolidated view of your cost optimization opportunities.
+- How to read idle-resource, right-sizing, and commitment signals.
+- How to turn a recommendation into an owned, governed follow-up action.
 
-**Owner/readiness:** Jackie He should confirm tenant/subscription access or use a Microsoft demo environment / screenshots if customer access is unavailable.
+## What you'll need
 
-## Demo Script
+- Access to the Azure portal with at least **Reader** on a subscription (plus Advisor/Cost Management access).
 
-- **Goal:** Show Bosch a practical starting point for cost optimization review before going deep into individual workload decisions.
-- **Setup:** Open the Azure Advisor Cost Optimization workbook or prepared screenshots in a Microsoft demo environment.
-- **Steps:**
-  1. Start with the workbook landing view.
-  2. Highlight idle resources / right-sizing / reservations / savings plans / Azure Hybrid Benefit signals.
-  3. Connect findings back to subscription ownership, tags, budgets, and accountability.
-  4. Pick one recommendation and explain how it becomes an owned follow-up action.
-- **Talk track:** "This workbook gives us a starting point. The value is not just seeing savings opportunities; it is turning those signals into owned, governed actions."
-- **Fallback:** If live access is unavailable, use screenshots and focus on the interpretation workflow.
+## Follow along
 
-## Assets
+1. In the portal, search for and open **Advisor**.
+2. Select **Workbooks**, then open the **Cost Optimization** workbook.
+3. Review the landing sections: **idle/unused resources**, **right-sizing**, **reservations & savings plans**, and **Azure Hybrid Benefit**.
+4. Pick one section (for example, idle public IPs or unattached disks) and note the resource count and estimated savings.
+5. Ask the ownership questions: which subscription, resource group, or tag owns this resource, and who would action it?
 
-- [`idle-resource-signals.kql`](idle-resource-signals.kql) — Azure Resource Graph queries for the idle/waste signals behind the workbook (unattached disks, idle public IPs, stopped-but-allocated VMs, empty RGs, untagged resources).
-- [`Get-CostOptimizationSignals.ps1`](Get-CostOptimizationSignals.ps1) — lists Advisor cost recommendations and prints the portal deep-link to the Cost Optimization workbook.
+## What to look for
 
-## Notes / Prep
+- The workbook is a *starting point*. Its value isn't just spotting savings — it's converting each signal into an owned, governed action tied to a real owner and budget.
 
-_Add demo-specific setup notes, links, screenshots, or scripts here._
+## Go deeper (optional)
+
+- [`idle-resource-signals.kql`](idle-resource-signals.kql) — paste into **Resource Graph Explorer** to list the waste signals directly (unattached disks, idle public IPs, stopped-but-allocated VMs, empty resource groups, untagged resources).
+- [`Get-CostOptimizationSignals.ps1`](Get-CostOptimizationSignals.ps1) — lists Advisor cost recommendations and prints a deep link to the workbook.

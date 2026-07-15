@@ -1,35 +1,31 @@
-# Demo 2: VM SKU Decision and Right-Sizing Considerations
+# Demo 2: VM Right-Sizing
 
-**Segment:** Workload Optimization – Compute
-**Speaker/Owner:** Ahmet Arsan
-**Timebox:** 12 minutes
+_Topic: Compute_
 
-## Overview
+Underused virtual machines are one of the most common sources of avoidable cost. This demo walks through a repeatable way to decide what to do about them — resize, schedule, switch pricing model, or leave alone.
 
-**Description:** Show a practical decision flow for reviewing VM cost drivers such as region, generation, SKU family, utilization, billing state, and workload characteristics before choosing resize or modernization actions.
+## What you'll learn
 
-**Customer takeaway:** Bosch gets a repeatable method for separating obvious waste from legitimate performance requirements and identifying where reservations or savings plans should come after right-sizing.
+- How to find right-sizing candidates from Azure Advisor.
+- How to validate a VM's real utilization before acting.
+- How to choose between resize, scheduled shutdown, burstable, Spot, modernization, or no action.
 
-**Owner/readiness:** Ahmet Arsan should prepare an example before/after SKU discussion and define which Azure Advisor, Azure Monitor, Log Analytics, or Cost Management signals will be referenced.
+## What you'll need
 
-## Demo Script
+- Azure portal access to a subscription with at least one VM (or just follow along with the views).
 
-- **Goal:** Demonstrate that VM right-sizing is a controlled decision process that starts with utilization signals and ends with an informed action.
-- **Setup:** Prepare Azure Advisor right-size recommendations or a Log Analytics workspace with VM performance counters. If using KQL, show candidate detection using average CPU, 95th percentile CPU, memory, disk, and network signals where available.
-- **Steps:**
-  1. Explain the decision frame: find candidates, validate workload behavior, choose action, confirm savings and risk.
-  2. Show a candidate list from Advisor or KQL.
-  3. Pick one VM, inspect 14–30 days of utilization.
-  4. Validate memory / disk / network / licensing / criticality constraints.
-  5. Compare actions such as resize, schedule shutdown, burstable, Spot, modernization, or no action.
-- **Talk track:** "Underutilization is a signal, not a verdict. The goal is to identify candidates and then decide whether resize, scheduling, Spot, burstable, modernization, or no action is the right move."
-- **Fallback:** If guest metrics are not available, use Azure Advisor and Azure Monitor platform metrics, then discuss what additional VM Insights or Log Analytics data would improve confidence.
+## Follow along
 
-## Assets
+1. In the portal, open **Advisor** → **Cost**, and find **"Right-size or shut down underutilized virtual machines."**
+2. Open one of the listed VMs, go to **Monitoring** → **Metrics**, and chart **CPU (average and max)** over the last **14–30 days**. If guest metrics are enabled, also review memory; check disk and network too.
+3. Check the constraints that a chart won't show: memory headroom, disk throughput needs, licensing, and how business-critical the workload is.
+4. Compare the options: **resize** to a smaller SKU, **schedule shutdown** (Auto-shutdown or Start/Stop), move to a **burstable B-series**, use **Spot** (see Demo 3), **modernize** to a PaaS service, or **no action** if the size is justified.
 
-- [`vm-rightsizing-candidates.kql`](vm-rightsizing-candidates.kql) — VM Insights / Perf KQL to find right-size candidates (avg + p95 CPU) and a multi-signal validation query for a single VM.
-- [`Get-VMRightSizeRecommendations.ps1`](Get-VMRightSizeRecommendations.ps1) — Advisor VM right-size/shutdown recommendations with current SKU, target SKU, and projected annual savings.
+## What to look for
 
-## Notes / Prep
+- Underutilization is a **signal, not a verdict**. The goal is to identify candidates and then make an informed decision — not to blindly shrink every VM.
 
-_Add demo-specific setup notes, links, screenshots, or KQL queries here._
+## Go deeper (optional)
+
+- [`vm-rightsizing-candidates.kql`](vm-rightsizing-candidates.kql) — VM Insights / Perf queries to find candidates (average + 95th-percentile CPU) and validate a single VM across CPU, memory, disk, and network.
+- [`Get-VMRightSizeRecommendations.ps1`](Get-VMRightSizeRecommendations.ps1) — Advisor right-size/shutdown recommendations with current SKU, target SKU, and projected annual savings.

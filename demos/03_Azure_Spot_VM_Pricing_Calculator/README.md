@@ -1,33 +1,30 @@
-# Demo 3: Azure Spot VM Pricing Calculator
+# Demo 3: Azure Spot VM Pricing
 
-**Segment:** Workload Optimization – Compute
-**Speaker/Owner:** Ahmet Arsan
-**Timebox:** 8 minutes
+_Topic: Compute_
 
-## Overview
+Spot VMs offer deep discounts on spare Azure capacity — but they can be reclaimed at any time. This demo shows how to read the price advantage and eviction risk so you know when Spot is a good fit.
 
-**Description:** Demonstrate how Spot VM pricing, price history, eviction risk, region, and VM size influence whether Spot is appropriate for interruption-tolerant workloads such as dev/test, batch, CI/CD, or stateless processing.
+## What you'll learn
 
-**Customer takeaway:** Bosch understands where Spot can materially reduce compute cost and where workload resiliency, eviction behavior, or operational risk make it a poor fit.
+- Where Spot can materially reduce compute cost.
+- How to read Spot price and eviction rate.
+- Which workloads are (and aren't) suitable for Spot.
 
-**Owner/readiness:** Ahmet Arsan should prepare one clear example workload and region/SKU comparison and position this as decision guidance rather than a universal recommendation.
+## What you'll need
 
-## Demo Script
+- A web browser. No subscription required for the pricing comparison.
 
-- **Goal:** Show Bosch how to decide whether Spot is appropriate based on workload tolerance, price advantage, and eviction risk.
-- **Setup:** Prepare the Spot VM pricing view or calculator, with one example workload such as batch processing, dev/test, CI runners, or stateless workers.
-- **Steps:**
-  1. Explain that Spot is capacity-dependent and best suited for interruption-tolerant workloads.
-  2. Compare standard VM price to Spot price for one region and VM family.
-  3. Discuss eviction behavior / max price / availability / retry strategy.
-  4. Show how Spot fits into the broader compute optimization model.
-- **Talk track:** "Spot is not a discount switch. It is a design choice for workloads that can tolerate interruption."
-- **Fallback:** If the pricing tool is unavailable, use a prepared screenshot and walk through the decision criteria.
+## Follow along
 
-## Assets
+1. Open the **Azure Pricing Calculator** (<https://azure.microsoft.com/pricing/calculator/>) and add a **Virtual Machine**, or open the VM pricing page.
+2. Pick a **region** and **VM family**, then compare the **pay-as-you-go** price to the **Spot** price and note the discount percentage.
+3. In the portal, start creating a VM and switch on the **Azure Spot** option — the create blade shows the **current Spot price** and the **eviction rate** for that size, plus the **eviction policy** and **maximum price** settings.
+4. Match Spot to the workload: it's a fit for **interruption-tolerant** work such as batch processing, dev/test, CI/CD runners, and stateless workers — not for stateful or always-on services.
 
-- [`Compare-SpotPricing.ps1`](Compare-SpotPricing.ps1) — queries the public Azure Retail Prices API to show live standard vs Spot pricing and the discount % for a VM family in a region (no auth required).
+## What to look for
 
-## Notes / Prep
+- Spot is a **design choice, not a discount switch**. Use it only where the workload can tolerate being interrupted and restarted.
 
-_Add demo-specific setup notes, links, screenshots, or pricing scripts here._
+## Go deeper (optional)
+
+- [`Compare-SpotPricing.ps1`](Compare-SpotPricing.ps1) — queries the public Azure Retail Prices API to show live pay-as-you-go vs Spot pricing and the discount % for a VM family in a region (no sign-in required).

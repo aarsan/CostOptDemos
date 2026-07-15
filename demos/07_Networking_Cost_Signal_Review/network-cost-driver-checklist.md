@@ -1,6 +1,6 @@
 # Demo 7: Network Cost Driver Checklist
 
-Use this as the discussion-led backbone. For each driver, the goal is to turn a
+Use this checklist to review networking cost drivers. For each driver, the goal is to turn a
 cost signal into an **architecture review question**, not a blanket fix.
 
 ## Cost drivers to walk through
