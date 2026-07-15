@@ -19,3 +19,4 @@ Each demo lives in its own folder under [`demos/`](demos/) with a `README.md` th
 | 5 | [Storage Lifecycle & Redundancy](demos/05_Storage_Lifecycle_Redundancy/README.md) | Storage | Umesh Panwar | 10 min |
 | 6 | [Log Analytics Cost Controls](demos/06_Log_Analytics_Cost_Controls/README.md) | Storage & Log Analytics | Umesh Panwar | 10 min |
 | 7 | [Networking Cost Signal Review](demos/07_Networking_Cost_Signal_Review/README.md) | Networking | Ahmet Arsan | 8 min |
+| 8 | [Networking Idle-Resource Cost (Portal)](demos/08_Networking_Portal_Idle_Resources/README.md) | Networking | Ahmet Arsan | 10 min |
