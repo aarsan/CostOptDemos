@@ -19,7 +19,7 @@ Welcome! This repository contains the follow-along guides for the **Azure Cost O
 | 4 | [App Service Plan Optimization](demos/04_App_Service_Plan_Optimization_SKIP/README.md) _(optional reference)_ | Compute |
 | 5 | [Storage Lifecycle & Redundancy](demos/05_Storage_Lifecycle_Redundancy/README.md) | Storage |
 | 6 | [Log Analytics Cost Controls](demos/06_Log_Analytics_Cost_Controls/README.md) | Monitoring |
-| 7 | [Networking Cost Optimization](demos/07_Networking_Cost_Signal_Review/README.md) | Networking |
+| 7 | [Networking Cost Optimization](demos/07_Networking_Pricing_Calculator/README.md) | Networking |
 
 ## A note on cost signals
 
