@@ -1,31 +1,27 @@
-# Demo 4: App Service Plan Optimization — SKIPPED
+# Demo 4: App Service Plan Optimization
 
-> **This demo is marked as skipped in the workshop agenda.** Included here for completeness and future reuse.
+_Topic: Compute · Optional reference — not covered in the live session_
 
-**Segment:** Workload Optimization – Compute
-**Speaker/Owner:** Ahmet Arsan
-**Timebox:** 10 minutes
+> This demo isn't part of the live agenda. It's included as a reference you can work through on your own.
 
-## Overview
+App Service cost is paid at the **plan** level, not per app. This guide shows how to evaluate whether a plan is sized, scaled, and shared efficiently.
 
-**Description:** Review App Service Plan cost drivers including pricing tier, instance count, scale-up versus scale-out, deployment slots, diagnostics, and plan utilization; discuss consolidation and scheduled autoscale opportunities.
+## What you'll learn
 
-**Customer takeaway:** Bosch sees how App Service optimization differs from VM optimization and how to evaluate plan-level efficiency before changing application architecture.
+- Why the App Service **plan** is the billing container.
+- Which settings drive plan cost: tier, instance count, scale-up vs scale-out, autoscale, slots, and diagnostics.
+- Where consolidation and scheduled scaling can help.
 
-**Owner/readiness:** Ahmet Arsan can run this as a conceptual walkthrough if no live environment is available; prepare screenshots or a sample plan utilization scenario.
+## What you'll need
 
-## Demo Script
+- Azure portal access to a subscription with an App Service Plan (optional — you can also just read through).
 
-- **Goal:** Help Bosch evaluate whether App Service Plans are appropriately sized, consolidated, and scaled for their application patterns.
-- **Setup:** Prepare one App Service Plan example or screenshots showing pricing tier, instance count, app count, utilization, and scaling configuration.
-- **Steps:**
-  1. Explain that App Service cost is paid at the plan level.
-  2. Review tier / instance count / scale-up / scale-out / autoscale / deployment slots / diagnostics.
-  3. Discuss consolidation opportunities and tradeoffs.
-  4. Compare possible actions such as resize tier, reduce instances, schedule autoscale, consolidate apps, move to Premium v3, or keep separation for resiliency/security reasons.
-- **Talk track:** "Unlike a VM, the App Service Plan is the billing container. Optimization often starts by asking whether the plan is sized and shared appropriately."
-- **Fallback:** Use a sample utilization scenario if no Bosch environment access is available.
+## Follow along
 
-## Notes / Prep
+1. In the portal, open **App Service plans** and select a plan. Note its **pricing tier** and **instance count**.
+2. Review the apps running on the plan, and the **scale-up** (tier) vs **scale-out** (instances) settings, any **autoscale** rules, **deployment slots**, and **diagnostics**.
+3. Consider the options: **resize the tier**, **reduce instances**, **schedule autoscale** for predictable load, **consolidate** low-traffic apps onto one plan, or move to **Premium v3** — while keeping separation where resiliency or security requires it.
 
-_Add demo-specific setup notes, links, screenshots, or scripts here._
+## What to look for
+
+- Unlike a VM, the **plan** is what you pay for. Optimization usually starts by asking whether the plan is sized and shared appropriately for the apps on it.
